@@ -1,0 +1,28 @@
+{
+  "name": "vue_template",
+  "version": "1.0.0",
+  "description": "基于vue+webpack的项目搭建",
+  "main": "index.js",
+  "scripts": {
+    "test": "webpack index.js --output-filename=./index.js --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/hhlingyoko/vue-easy-build.git"
+  },
+  "keywords": [
+    "123456"
+  ],
+  "author": "yoko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hhlingyoko/vue-easy-build/issues"
+  },
+  "homepage": "https://github.com/hhlingyoko/vue-easy-build#readme",
+  "devDependencies": {
+    "css-loader": "^2.1.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}
