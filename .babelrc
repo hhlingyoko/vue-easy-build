@@ -1,0 +1,12 @@
+// 在.babelrc配置文件中，主要是对预设（presets）和插件（plugins）进行配置,转义器包这里设置为stage-2
+{
+  "presets": [
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+      }
+    }],
+    "stage-2" 
+  ]
+}

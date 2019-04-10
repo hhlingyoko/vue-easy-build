@@ -4,7 +4,9 @@
   "description": "基于vue+webpack的项目搭建",
   "main": "index.js",
   "scripts": {
-    "test": "webpack index.js --output-filename=./index.js --mode=development"
+    "test": "webpack index.js --output-filename=./index.js --mode=development",
+    "build": "node build/build.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +22,24 @@
   },
   "homepage": "https://github.com/hhlingyoko/vue-easy-build#readme",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "clean-webpack-plugin": "^2.0.1",
     "css-loader": "^2.1.1",
+    "html-webpack-plugin": "^3.2.0",
     "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "vue-loader": "^13.7.3",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.0",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "vue": "^2.6.10"
   }
 }
