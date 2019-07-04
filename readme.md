@@ -6,7 +6,8 @@
 `npm install webpack webpack-cli -D // -D是 --save-dev的简写`
 #### 3. 安装loader 
 css-loader：用于读取css文件， style-loader：用于将样式插入到页面中
-`npm install css-loader style-loader -D`
+因项目中常用less, 所以这里又安装了`less` 和 `less-loader`
+`npm install css-loader less less-loader style-loader -D`
 
 #### 4. 配置Webpack
 新建`build`文件夹，把Webpack 配置相关的文件放在此目录下。
@@ -42,6 +43,8 @@ cnpm i webpack-merge clean-webpack-plugin webpack-dev-server html-webpack-plugin
 至此，基础的打包功能已完成。下面我们要对项目进行扩充，使它的功能更强大。
 
 #### 4. 引入基础loader
+很多浏览器并不支持es6,比如async/awiat，const。因此需要我们引用babe来把我们es6的代码编译为es5，并在跟目录下新建.babelrc,简单配置。
+
 - 安装`babel-loader` 和 转义器包`stage-2`
 
 > webpack 4.x | babel-loader 7.x | babel 6.x
@@ -126,16 +129,105 @@ cnpm i url-loader -D
     ]
   }
 ```
-
 > url-loader 和 file-loader 对比
 file-loader相比差不多，url-loader会按照配置把小于一定大小的图片以dataUrl的形式储存。
 url-loader工作分两种情况：
 1. 文件大小小于limit参数，url-loader将会把文件转为DataURL；
 2. 文件大小大于limit，url-loader会调用file-loader进行处理，参数也会直接传给file-loader
 url-loader封装了file-loader。url-loader不依赖于file-loader，即使用url-loader时，只需要安装url-loader即可，不需要安装file-loader，因为url-loader内置了file-loader。
-
-- 安装 vue-loader
+---
+- 安装 vue 和 vue-loader
 ```
-  cnpm i vue-loader vue-template-compiler -D
+  cnpm i vue vue-loader css-loader vue-style-loader vue-template-compiler -D
+```
+注意： webpak4, vue-loader需要^14版本，否则会因版本问题报错
+
+省略后缀 和 配置别名
+在 `webpack.base.conf.js` 的`resolve`里添加代码：
+```
+  extensions: ['*', '.js', '.json', '.vue'], // 省略后缀
+  alias: { // 配置别名
+    'vue$': 'vue/dist/vue.min.js',
+    '@': path.resolve(__dirname,'../src'),
+  }
+```
+修改`index.js`为
+```
+import Vue from 'vue';
+import App from './App';
+
+new Vue({
+  el: '#app',
+  template: '<App/>',
+  components: { App }
+});
+```
+在同级目录下新增`app.vue`,添加代码
+```
+<template>
+    <h2>vue输出</h2> 
+</template>
+
+<script>
+export default {
+  name: 'App'
+}
+</script>
+<style>
+  html, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+</style>
+```
+运行命令`cnpm run dev`,页面会输出`vue输出`标题字样，说明项目已经可以使用 Vue 单文件组件进行开发，下面我们要添加一些优化内容。
+
+#### 5. css优化
+安装`postcss-loader` 和 `autoprefixer`。
+postcss用于 把 CSS 解析成 JavaScript 可以操作的 抽象语法树结构，调用插件来处理 AST 并得到结果。
+autoprefixer用于 解析CSS文件并且添加浏览器前缀到CSS内容里。
+
+```
+cnpm i postcss-loader autoprefixer -D
+```
+修改`module.rules`的配置项为
+```
+  {
+    test:/\.css$/,
+    use:['vue-style-loader', 'css-loader', 'postcss-loader']
+  }
+```
+根目录下新增配置`postcss.config.js`，写入代码
+```
+module.exports = {
+  plugins: [
+    require('autoprefixer')
+  ]
+}
+```
+
+#### 6. 热更新
+在`webpack.dev.conf.js`的`devServer`下添加`hot:true`，此外还要添加插件`HotModuleReplacementPlugin`,
+此时，仅支持了css的热更新，JavaScript的热更新需要再入口文件中添加代码
+```
+if (module.hot) {
+  module.hot.accept();
+}
+```
+
+#### 7. 第三方库单独打包
+
+#### 8. 
+
+####  其他
+
+
+
+ExtractTextPlugin： 打包的css拆分,将这部分抽离出来 
+安装时出现问题，这时重新安装，选择4.00-beta.0版本的
+```
+npm i extract-text-webpack-plugin@last -D
 ```
 

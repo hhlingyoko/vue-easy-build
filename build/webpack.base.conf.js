@@ -1,7 +1,8 @@
 // 基础打包配置
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin'); // 用于编译 Webpack 项目中的 html 类型的文件
-// const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // html打包
+const AutoDllPlugin = require('autodll-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin') //css在dist目录下需要和我们的HTML分离
 
 module.exports = {
   entry: {
@@ -22,7 +23,7 @@ module.exports = {
         test:  /\.(png|jpg|gif)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
               limit: 10000
             }
@@ -33,7 +34,7 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
               limit: 10000
             }
@@ -44,6 +45,10 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
+      {
+        test:/\.(less)$/,
+        use:['vue-style-loader', 'css-loader','less-loader', 'postcss-loader']
+      }
     ]
   },
   resolve: {
@@ -54,9 +59,11 @@ module.exports = {
     }
   },
   plugins: [
+    // new ExtractTextPlugin( {
+    //   filename: '../dist/css/style.css'// 从 .js 文件中提取出来的 .css 文件的名称
+    // }),  
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../index.html')
     }),
-    // new VueLoaderPlugin()
   ]
 };

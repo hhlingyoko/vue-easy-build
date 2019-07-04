@@ -1,19 +1,12 @@
 <template>
-  <div>
     <h2>vue输出</h2> 
-  </div>
 </template>
 
 <script>
+import '@/css/index.less'
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+  },
 }
 </script>
-<style>
-  /* html, body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-size: 16px;
-  } */
-</style>
